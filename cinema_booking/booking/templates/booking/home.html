@@ -1,0 +1,24 @@
+{% extends "booking/base.html" %}
+
+{% block title %}Home{% endblock %}
+{% load static %}
+{% block content %}
+<h2>Welcome to Cinema Booking</h2>
+<p>Select a movie and reserve your seat!</p>
+<div class="row">
+    {% for movie in movies %}
+    <div class="col-md-3 d-flex">
+        <div class="card mb-4">
+            {% if movie.poster_image %}
+            <img src="{{ movie.poster_image.url }}" class="card-img-top" alt="{{ movie.title }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ movie.title }}</h5>
+                <p class="card-text">{{ movie.description|truncatewords:15 }}</p>
+                <a href="{% url 'screenings' movie.id %}" class="btn btn-primary">View Screenings</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

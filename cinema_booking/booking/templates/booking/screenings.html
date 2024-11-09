@@ -1,0 +1,16 @@
+{% extends "booking/base.html" %}
+
+{% block title %}Screenings{% endblock %}
+
+{% block content %}
+<h2>Screenings</h2>
+<ul class="list-group">
+    {% for screening in screenings %}
+    <li class="list-group-item">
+        <h5>{{ screening.screening_time }} - {{ screening.cinema_hall }}</h5>
+        <p>Available Seats: {{ screening.available_seats }}</p>
+        <a href="{% url 'select_seats' screening.id %}" class="btn btn-secondary">Select Seats</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

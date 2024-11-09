@@ -1,0 +1,27 @@
+{% extends "booking/base.html" %}
+
+{% block title %}My Tickets{% endblock %}
+
+{% block content %}
+<h2>My Booked Tickets</h2>
+
+{% if tickets %}
+    <div class="list-group">
+        {% for ticket in tickets %}
+        <div class="list-group-item">
+            <h5>Movie: {{ ticket.seat.screening.movie.title }}</h5>
+            <p>Screening Time: {{ ticket.seat.screening.screening_time }}</p>
+            <p>Seat Number: {{ ticket.seat.seat_number }}</p>
+            <p>Booked on: {{ ticket.booking_time }}</p>
+            {% if ticket.voucher %}
+                <p>Voucher Used: {{ ticket.voucher.code }}</p>
+            {% else %}
+                <p>No Voucher Used</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>You have not booked any tickets yet.</p>
+{% endif %}
+{% endblock %}

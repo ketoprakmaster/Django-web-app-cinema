@@ -1,0 +1,34 @@
+{% extends "booking/base.html" %}
+
+{% block title %}Select Seats{% endblock %}
+{% load static %}
+
+{% block content %}
+<h2>Select Seats for {{ screening.movie.title }}</h2>
+<p>Screening Time: {{ screening.screening_time }}</p>
+<p>Cinema Hall: {{ screening.cinema_hall }}</p>
+
+<div class="container">
+    <div class="row">
+        {% for seat in seats %}
+        <div class="col-2 mb-3">
+            {% if seat.is_available %}
+            <form action="{% url 'book_tickets' seat.id %}">
+                <button class="btn w-100 card">
+                    <p class="text-secondary">Seat Number: {{ seat.seat_number }}</p>
+                    <img alt="Available Chair" class="img-fluid" src="{% static 'icon/chair_available.png' %}">
+                    <p class="text-success center">Available</p>
+                </button>
+            </form>
+            {% else %}
+                <div class="p-4 card bg-tertiary">
+                    <p class="text-secondary">Seat Number: {{ seat.seat_number }}</p>
+                    <img alt="Booked Chair" class="img-fluid" src="{% static 'icon/chair_booked.png' %}">
+                    <p class="text-secondary">Already Booked</p>
+                </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

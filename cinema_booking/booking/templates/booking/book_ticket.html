@@ -1,0 +1,23 @@
+{% extends "booking/base.html" %}
+
+{% block title %}Book Ticket{% endblock %}
+
+{% block content %}
+{% if seat.is_available %}
+<h2>Book Seat {{ seat.seat_number }}</h2>
+<p>Screening: {{ seat.screening.movie.title }}</p>
+<p>Time: {{ seat.screening.screening_time }}</p>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="voucher">Enter Voucher Code:</label>
+    <input type="text" name="voucher" id="voucher" class="form-control" required>
+    <button type="submit" class="btn btn-primary mt-3">Book Now</button>
+</form>
+
+{% else %}
+<br>
+<h1>Seats is already booked.</h1>
+{% endif %}
+
+{% endblock %}
