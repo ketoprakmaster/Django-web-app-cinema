@@ -12,7 +12,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)  # Automatically log in new user
-            messages.success("successfully register")
+            messages.success(request,"successfully register")
             return redirect('home')  # Redirect to the home page
     else:
         form = UserCreationForm()

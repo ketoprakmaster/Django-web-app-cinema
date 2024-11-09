@@ -18,6 +18,7 @@ class Movie(models.Model):
 class Screening(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="screenings")
     screening_time = models.DateTimeField()
+    cinema_hall = models.CharField(max_length=45)
     available_seats = models.IntegerField()
 
     def __str__(self):
@@ -38,7 +39,7 @@ class Seat(models.Model):
     is_available = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"[{"Available" if self.is_available else "Unavailable"}] seats at {self.seat_number} for {self.screening}"
+        return f"[{'Available' if self.is_available else 'Unavailable'}] seats at {self.seat_number} for {self.screening}"
     
     class Meta:
         constraints = [
