@@ -47,12 +47,19 @@ class Seat(models.Model):
         ]
 
 class Voucher(models.Model):
-    code = models.CharField(max_length=100, unique=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    code = models.CharField(max_length=50, unique=True,blank=True,editable=False)
     is_used = models.BooleanField(default=False)
-    user = models.ForeignKey('auth.User', on_delete=models.SET_NULL, null=True, blank=True)
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    valid_until = models.DateTimeField(null=True, blank=True)
     def __str__(self):
-        return self.code
+        return f"Voucher {self.code} ({'Used' if self.is_used else 'Unused'})"
+    def is_valid(self):
+        # Check if the voucher is still valid
+        if self.is_used or (self.valid_until and self.valid_until < timezone.now()):
+            return False
+        return True
+
 
 class Ticket(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -61,6 +68,6 @@ class Ticket(models.Model):
     voucher = models.ForeignKey(Voucher, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return f"Ticket for {self.user.username} - Seat {self.seat.seat_number}"
+        return f"[{self.user.username}] Seat tickets at: {self.seat.seat_number}"
 
 
