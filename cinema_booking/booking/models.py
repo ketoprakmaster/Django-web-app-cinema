@@ -13,7 +13,7 @@ class Movie(models.Model):
     poster_image = models.ImageField(upload_to='movie_posters/', null=True, blank=True)  
 
     def __str__(self):
-        return self.title
+        return f"{self.title}"
 
 class Screening(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="screenings")
@@ -22,7 +22,7 @@ class Screening(models.Model):
     available_seats = models.IntegerField()
 
     def __str__(self):
-        return f"{self.movie.title} at {self.screening_time} in {self.cinema_hall}"
+        return f"{self.movie}"
     
     def save(self, *args, **kwargs):
         is_new = self.pk is None  # Check if the screening is being created for the first time
@@ -39,8 +39,7 @@ class Seat(models.Model):
     is_available = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"[{'Available' if self.is_available else 'Unavailable'}] seats at {self.seat_number} for {self.screening}"
-    
+        return "Available" if self.is_available else "Booked"
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['screening', 'seat_number'], name='unique_seat_per_screening')
@@ -68,6 +67,6 @@ class Ticket(models.Model):
     voucher = models.ForeignKey(Voucher, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
-        return f"[{self.user.username}] Seat tickets at: {self.seat.seat_number}"
+        return f"'{self.user.username}' Seat tickets number {self.seat.seat_number}"
 
 

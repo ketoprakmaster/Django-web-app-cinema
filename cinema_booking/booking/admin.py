@@ -4,10 +4,6 @@ from .models import Movie, Screening, Seat, Voucher, Ticket
 import random, string, uuid
 
 # Register your models here.
-admin.site.register(Movie)
-admin.site.register(Screening)
-admin.site.register(Seat)
-admin.site.register(Ticket)
 
 @admin.action(description='Generate new vouchers')
 def generate_vouchers(modeladmin, request, queryset):
@@ -21,6 +17,29 @@ def generate_vouchers(modeladmin, request, queryset):
         except IntegrityError:
             continue
     modeladmin.message_user(request, f'{num_vouchers} vouchers have been successfully generated.')
+
+class TicketsAdmin(admin.ModelAdmin):
+    list_display = ["__str__","seat","booking_time",]
+    search_fields = ["user","seat"]
+admin.site.register(Ticket,TicketsAdmin)
+
+class SeatsAdmin(admin.ModelAdmin):
+    list_display = ["__str__","seat_number","screening"]
+    search_fields = ["seat_number","screening"]
+    list_filter = ["is_available"]
+admin.site.register(Seat,SeatsAdmin)
+
+class ScreeningsAdmin(admin.ModelAdmin):
+    list_display = ["movie","screening_time","cinema_hall","available_seats"]
+    search_fields = ["cinema_hall","movie"]
+    list_filter = ["cinema_hall"]
+admin.site.register(Screening,ScreeningsAdmin)
+
+class MovieAdmin(admin.ModelAdmin):
+    list_display = ["__str__","release_date","duration",]
+    search_fields = ["title"]
+    list_filter = ["genre"]
+admin.site.register(Movie,MovieAdmin)
 
 class VoucherAdmin(admin.ModelAdmin):
     list_display = ('code', 'valid_until', 'is_used')
@@ -37,5 +56,4 @@ class VoucherAdmin(admin.ModelAdmin):
             except IntegrityError:
                 continue
         super().save_model(request, obj, form, change)
-
 admin.site.register(Voucher, VoucherAdmin)
