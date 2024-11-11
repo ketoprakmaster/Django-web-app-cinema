@@ -32,7 +32,6 @@ class Screening(models.Model):
             for seat_num in range(1, self.available_seats + 1):
                 Seat.objects.create(screening=self, seat_number=seat_num)
 
-
 class Seat(models.Model):
     screening = models.ForeignKey(Screening, on_delete=models.CASCADE, related_name="seats")
     seat_number = models.CharField(max_length=5)
@@ -52,19 +51,18 @@ class Voucher(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     valid_until = models.DateTimeField(null=True, blank=True)
     def __str__(self):
-        return f"Voucher {self.code} ({'Used' if self.is_used else 'Unused'})"
+        return f"{self.code}"
     def is_valid(self):
         # Check if the voucher is still valid
         if self.is_used or (self.valid_until and self.valid_until < timezone.now()):
             return False
         return True
 
-
 class Ticket(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     seat = models.OneToOneField(Seat, on_delete=models.CASCADE)
     booking_time = models.DateTimeField(auto_now_add=True)
-    voucher = models.ForeignKey(Voucher, on_delete=models.SET_NULL, null=True, blank=True)
+    voucher = models.ForeignKey(Voucher, on_delete=models.SET_NULL, null=True, blank=True,editable=False)
 
     def __str__(self):
         return f"'{self.user.username}' Seat tickets number {self.seat.seat_number}"
