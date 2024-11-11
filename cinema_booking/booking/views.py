@@ -1,22 +1,45 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.shortcuts import render, redirect, HttpResponse, get_object_or_404
-from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from .models import Movie, Screening, Seat, Ticket, Voucher
-import random
+from .forms import CustomAuthenticationForm, CustomUserCreationForm
+
+def logout(request):
+    if not request.user.is_authenticated:
+        messages.info(request,"you already logout.")
+    else:
+        auth_logout(request)
+        messages.success(request,"successfully log out.")
+    return redirect('home')
+
+def login(request):
+    if request.method == 'POST':
+        form = CustomAuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            auth_login(request,user)  # Log the user in
+            messages.success(request, "Successfully logged in!")
+            return redirect('home')
+        else:
+            messages.error(request, "Invalid username or password")
+    else:
+        form = CustomAuthenticationForm()
+    return render(request, 'booking/login.html', {'form': form})
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login(request, user)  # Automatically log in new user
-            messages.success(request,"successfully register")
-            return redirect('home')  # Redirect to the home page
+            auth_login(request,user)  # Automatically log in the new user
+            messages.success(request, "Successfully registered!")
+            return redirect('home')
+        else:
+            messages.error(request,"registration failed! try again.")
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
     return render(request, 'booking/register.html', {'form': form})
 
 def movies(request,filter=None):

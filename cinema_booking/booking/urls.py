@@ -5,8 +5,8 @@ from . import views
 urlpatterns = [
     path('', views.movies, name='home'),  # Root URL
     path('movies/', views.movies, name='movies'),
-    path('login/', auth_views.LoginView.as_view(template_name='booking/login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='booking/logout.html'), name='logout'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
     path('register/', views.register, name='register'),
     path('my-tickets/', views.user_tickets, name='user_tickets'),
     path('movies/<int:movie_id>/', views.screenings, name='screenings'),
