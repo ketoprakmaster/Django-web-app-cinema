@@ -9,7 +9,7 @@
     <li class="list-group-item">
         <h5>{{ screening.screening_time }} - {{ screening.cinema_hall }}</h5>
         <p>Available Seats: {{ screening.available_seats }}</p>
-        <a href="{% url 'select_seats' screening.id %}" class="btn btn-secondary">Select Seats</a>
+        <a href="{% url 'select_seats' screening.id %}" class="btn btn-secondary">Book Seats</a>
     </li>
     {% endfor %}
 </ul>

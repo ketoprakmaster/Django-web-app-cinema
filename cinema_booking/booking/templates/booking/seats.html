@@ -8,27 +8,23 @@
 <p>Screening Time: {{ screening.screening_time }}</p>
 <p>Cinema Hall: {{ screening.cinema_hall }}</p>
 
-<div class="container">
-    <div class="row">
-        {% for seat in seats %}
-        <div class="col-2 mb-3">
-            {% if seat.is_available %}
-            <form action="{% url 'book_tickets' seat.id %}">
-                <button class="btn w-100 card">
-                    <p class="text-secondary">Seat Number: {{ seat.seat_number }}</p>
-                    <img alt="Available Chair" class="img-fluid" src="{% static 'icon/chair_available.png' %}">
-                    <p class="text-success center">Available</p>
-                </button>
-            </form>
-            {% else %}
-                <div class="p-4 card bg-tertiary">
-                    <p class="text-secondary">Seat Number: {{ seat.seat_number }}</p>
-                    <img alt="Booked Chair" class="img-fluid" src="{% static 'icon/chair_booked.png' %}">
-                    <p class="text-secondary">Already Booked</p>
-                </div>
-            {% endif %}
-        </div>
-        {% endfor %}
+<div class="d-flex flex-wrap p-2 center">
+    {% for seat in seats %}
+    <div class="col-6 col-sm-2 mb-3 p-2" style="width: 100px; min-width: 200px">
+        <form action="{% url 'book_tickets' seat.id %}">
+            <div class="w-100 card p-3">
+                <p class="text-secondary text-center">Seat Number: {{ seat.seat_number }}</p>
+                {% if seat.is_available %}
+                <img alt="Available Chair" class="img-fluid" src="{% static 'icon/chair_available.png' %}">
+                <button class="btn btn-success mt-3">Available</button>
+                {% else %}
+                <img alt="Booked Chair" class="img-fluid" src="{% static 'icon/chair_booked.png' %}">
+                <button disabled class="btn btn-secondary mt-3">Booked</button>
+                {% endif %}
+            </div>
+        </form>
     </div>
+    {% endfor %}
 </div>
+
 {% endblock %}
