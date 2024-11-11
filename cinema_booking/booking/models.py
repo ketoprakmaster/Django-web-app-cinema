@@ -14,6 +14,9 @@ class Movie(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+    
+    class Meta:
+        ordering = ['title']  # Default ordering by title
 
 class Screening(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="screenings")

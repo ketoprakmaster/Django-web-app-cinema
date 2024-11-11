@@ -11,7 +11,7 @@ def logout(request):
         messages.info(request,"you already logout.")
     else:
         auth_logout(request)
-        messages.success(request,"successfully log out.")
+        messages.success(request,"successfully log out")
     return redirect('home')
 
 def login(request):
@@ -42,7 +42,7 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'booking/register.html', {'form': form})
 
-def movies(request,filter=None):
+def movies(request):
     filter = request.GET.get("keyword")
     if filter:
         movies = Movie.objects.filter(title__contains=filter)
