@@ -2,6 +2,6 @@ __pycache__
 /.venv
 /venv
 /cinema_booking/booking/migrations/
-staticfiles
+/cinema_booking/static*
 db.sqlite3
 /cinema_booking/media
