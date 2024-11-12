@@ -8,9 +8,9 @@
 <p>Screening Time: {{ screening.screening_time }}</p>
 <p>Cinema Hall: {{ screening.cinema_hall }}</p>
 
-<div class="d-flex flex-wrap p-2 center">
+<div class="d-flex flex-wrap">
     {% for seat in seats %}
-    <div class="col-6 col-sm-2 mb-3 p-2" style="width: 100px; min-width: 200px">
+    <div class="col-6 col-sm-2 mb-3 p-2" style="width: 120px; min-width: 140px">
         <form action="{% url 'book_tickets' seat.id %}">
             <div class="w-100 card p-3">
                 <p class="text-secondary text-center">Seat Number: {{ seat.seat_number }}</p>

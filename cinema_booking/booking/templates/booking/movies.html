@@ -3,7 +3,13 @@
 {% block title %}Movies{% endblock %}
 {% load static %}
 {% block content %}
-<h2>Available Movies</h2>
+
+{% if page_obj %}
+<h2 class="mb-4">Available Movies</h2>
+{% else %}
+<h2>No Movie Available</h2>
+{% endif %}
+
 <div class="row d-flex">
     {% for movie in page_obj %}
     <div class="col-md-3 mb-3 d-flex">
@@ -23,24 +29,21 @@
         </div>
     </div>
     {% endfor %}
-</div>
-
+</div> {% if page_obj.paginator.num_pages > 1 %}
 <nav class="pagination mt-5">
     <ul class="pagination">
         {% if page_obj.has_previous %}
             <li class="page-item"><a class="page-link" href="?page=1">&laquo; first</a></li>
             <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">previous</a></li>
         {% endif %}
-        {% if page_obj.index %}
         <li class="page-item active">
-            <a class="page-link" href="#">{{ page_obj.index }} <span class="sr-only"></span></a>
+            <a class="page-link" href="#">{{ page_obj.number }} <span class="sr-only"></span></a>
         </li>
-        {% endif %}
         {% if page_obj.has_next %}
         <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">next</a></li>
-        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a></li>
         {% endif %}
     </spaul>
-</nav>
+</nav> {% endif %}
 
 {% endblock %}
